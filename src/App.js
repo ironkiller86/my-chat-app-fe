@@ -52,7 +52,8 @@ const fakeData = {
     console.log(message);
   },
 };
-const ENDPOINT = "http://127.0.0.1:3333";
+const ENDPOINT =
+  /*"http://127.0.0.1:3333"*/ "https://my-chat-app-v2.herokuapp.com";
 
 /*
  *
