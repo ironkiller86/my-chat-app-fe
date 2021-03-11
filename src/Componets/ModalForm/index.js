@@ -1,5 +1,5 @@
 /*
- * react hook import 
+ * react hook import
  */
 import { useState, useEffect } from "react";
 /*
@@ -21,9 +21,7 @@ const ModalForm = ({ isOpen = true, getNickname }) => {
   /*
    *
    */
-  useEffect(() => {
-    /*  console.log("useEffect", nickname);*/
-  }, [nickname]);
+  useEffect(() => {}, [nickname]);
   /*
    *
    */
