@@ -1,7 +1,7 @@
 /*
  *  import ant components
  */
-import { List, Avatar, message } from "antd";
+import { List, Avatar } from "antd";
 import alert from "../../assets/alert.png";
 /*
  *
@@ -22,7 +22,9 @@ const MessagesList = ({ messages = [] }) => {
               )
             }
             title={item?.title}
-            description={item?.message}
+            description={
+              <span style={{ color: "white" }}>{item?.message}</span>
+            }
           />
         </List.Item>
       )}

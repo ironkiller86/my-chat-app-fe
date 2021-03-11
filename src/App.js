@@ -1,11 +1,12 @@
 /*
  * react hook import
  */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 /*
  * import socket library
  */
 import socketIOClient from "socket.io-client";
+import { SendOutlined } from "@ant-design/icons";
 /*
  *
  */
@@ -21,39 +22,14 @@ import { Layout, Input, Button, Form } from "antd";
 import SideMenu from "./Componets/SideMenu";
 import MessagesList from "./Componets/MessagesList";
 import ModalForm from "./Componets/ModalForm";
-import Column from "antd/lib/table/Column";
+
 const { TextArea } = Input;
 const { Header, Content, Footer } = Layout;
 /*
  *
  */
-const fakeData = {
-  usersOnLine: [
-    { uId: 12341, nickname: "donato" },
-    { uId: 12343, nickname: "rossella" },
-  ],
-  messages: [
-    { msgType: "system", title: "Ant Design Title 1", message: "ciao a Tutti" },
-    {
-      title: "Ant Design Title 2",
-    },
-    {
-      title: "Ant Design Title 3",
-    },
-    {
-      title: "Ant Design Title 4",
-    },
-  ],
-  isOpen: false,
-  getNickname: (nickname) => {
-    console.log(nickname);
-  },
-  sendMessage: (message) => {
-    console.log(message);
-  },
-};
 const ENDPOINT =
-  /*"http://127.0.0.1:3333"*/ "https://my-chat-app-v2.herokuapp.com";
+  /*"http://127.0.0.1:3333";*/ "https://my-chat-app-v2.herokuapp.com";
 
 /*
  *
@@ -67,19 +43,28 @@ function App() {
   /*
    *
    */
+  const messagesEndRef = useRef(null);
+  /*
+   *
+   */
+  const scrollToBottom = () => {
+    messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" });
+  };
+  /*
+   *
+   */
   const setSocket = useCallback(() => {
     const socket = socketIOClient(ENDPOINT);
     setWebSocket(socket);
     socket.emit("newUser", nickName);
     socket.on("currentUserOnline", (usersOnline) => {
-      console.log(usersOnline);
       setUsersOnline(usersOnline);
     });
     socket.on("messageSystem", (messageSys) => {
-      console.log("messaggio di sistema", messageSys);
       setMessagesList((prevState) => [...prevState, messageSys]);
     });
-  });
+  }, [nickName]);
+
   /**
    *
    * @param {*} evt
@@ -94,20 +79,21 @@ function App() {
   /*
    *
    */
+  useEffect(() => {}, []);
+  /*
+   *
+   */
+  useEffect(() => {}, [message]);
+  /**
+   *
+   */
   useEffect(() => {
-    console.log("App useEffect");
-  }, []);
+    scrollToBottom();
+  }, [messagesList]);
   /*
    *
    */
   useEffect(() => {
-    console.log("App useEffect", message);
-  }, [message]);
-  /*
-   *
-   */
-  useEffect(() => {
-    console.log("App useEffect", nickName);
     if (nickName) {
       setSocket();
     }
@@ -116,37 +102,71 @@ function App() {
    *
    */
   return (
-    <Layout>
+    <Layout style={{ height: "100vh" }}>
       <ModalForm isOpen={nickName ? false : true} getNickname={setNickname} />
       <SideMenu usersOnLine={usersOnline} />
-      <Layout>
+      <Layout style={{ backgroundColor: "lightgray" }}>
         <Header
           className="site-layout-sub-header-background"
-          style={{ padding: 0 }}
-        />
-        <Content style={{ margin: "24px 16px 0" }}>
-          <div
-            style={{
-              minHeight: "500px",
-              overflow: "auto",
-            }}
-            className="site-layout-background"
-          >
-            <MessagesList messages={messagesList} />
-            <Form onFinish={sendMessage}>
-              <TextArea onChange={handlerMessage} value={message} rows={4} />
-              <Button
-                style={{ marginTop: "5px" }}
-                htmlType="submit"
-                type="primary"
-              >
-                Invia
-              </Button>
-            </Form>
-          </div>
+          style={{
+            padding: 0,
+            textAlign: "center",
+            fontSize: "20px",
+            fontWeight: "bold",
+            color: "white",
+          }}
+        >
+          {nickName ? `Benvenuto ${nickName}` : null}
+        </Header>
+        <Content
+          style={{
+            margin: "24px 16px 0",
+            height: "300px",
+            overflowY: "scroll",
+            backgroundColor: "gray",
+          }}
+        >
+          <MessagesList messages={messagesList} />
+          <div ref={messagesEndRef} />
         </Content>
+        <Form
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "10px 10px",
+          }}
+          onFinish={sendMessage}
+        >
+          <TextArea
+            style={{
+              borderRadius: "10px",
+              maxWidth: "400px",
+              border: "1px solid gray",
+            }}
+            onChange={handlerMessage}
+            value={message}
+            rows={1}
+          />
+          <Button
+            icon={<SendOutlined />}
+            size={"default"}
+            style={{
+              marginTop: "5px",
+              marginLeft: "10px",
+            }}
+            htmlType="submit"
+            type="primary"
+          >
+            Invia
+          </Button>
+        </Form>
         <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2018 Created by Ant UED
+          My-Chat by
+          <span style={{ fontWeight: "bold", marginLeft: "5px" }}>
+            Tuzzolino Donato
+          </span>
         </Footer>
       </Layout>
     </Layout>

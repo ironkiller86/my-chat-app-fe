@@ -1,7 +1,7 @@
 /*
  *  import ant components
  */
-import { Menu, Layout } from "antd";
+import { Avatar, Menu, Layout } from "antd";
 /*
  * import ant icons
  */
@@ -11,24 +11,37 @@ const { Sider } = Layout;
  *
  */
 const SideMenu = ({ usersOnLine = [] }) => {
-  //  console.log("SideMenu", usersOnLine);
   return (
     <Sider
       breakpoint="lg"
       collapsedWidth="0"
-      onBreakpoint={(broken) => {
-        console.log(broken);
-      }}
-      onCollapse={(collapsed, type) => {
-        console.log(collapsed, type);
-      }}
+      onBreakpoint={(broken) => {}}
+      onCollapse={(collapsed, type) => {}}
     >
       <div className="logo" />
-      <Menu theme="dark" mode="inline" /*defaultSelectedKeys={["4"]}*/>
+      <Menu
+        style={{ marginTop: "50px", padding: "2px" }}
+        theme="dark"
+        mode="inline"
+      >
         {usersOnLine.map((user) => {
           return (
-            <Menu.Item key={user.uId} icon={<UserOutlined />}>
-              {user.nickname}
+            <Menu.Item key={user.uId}>
+              <Avatar
+                style={{
+                  backgroundColor: "#87d068",
+                }}
+                icon={<UserOutlined />}
+              />
+              <span
+                style={{
+                  marginLeft: "15px",
+                  color: "#87d068",
+                  fontsize: "bold",
+                }}
+              >
+                {user.nickname.toUpperCase()}
+              </span>
             </Menu.Item>
           );
         })}
