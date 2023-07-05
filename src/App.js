@@ -29,7 +29,7 @@ const { Header, Content, Footer } = Layout;
  *
  */
 const ENDPOINT =
-  /*"http://127.0.0.1:3333";*/ "https://my-chat-app-v2.herokuapp.com";
+  /*"http://127.0.0.1:3333";*/ "https://my-chat-app-be.vercel.app/";
 
 /*
  *
