@@ -28,8 +28,8 @@ const { Header, Content, Footer } = Layout;
 /*
  *
  */
-const ENDPOINT ="https://my-chat-app-be.vercel.app";
- /*  "http://localhost:3333";  */
+const ENDPOINT ="https://chat-be-pjc8.onrender.com";
+
 
 /*
  *
